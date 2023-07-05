@@ -12,11 +12,19 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
+
     try {
-      const res = await axios.post("/auth/login", {
-        username: userRef.current.value,
-        password: passwordRef.current.value,
-      });
+      console.log(
+        "process.env.REACT_APP_BASE_URL",
+        process.env.REACT_APP_BASE_URL
+      );
+      const res = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}auth/login`,
+        {
+          username: userRef.current.value,
+          password: passwordRef.current.value,
+        }
+      );
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE" });

@@ -9,7 +9,7 @@ export default function SinglePost() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
   const [post, setPost] = useState({});
-  const PF = "http://localhost:5000/images/";
+  const PF = "https://weak-lime-marlin-veil.cyclic.app/images/";
   const { user } = useContext(Context);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -17,7 +17,8 @@ export default function SinglePost() {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get("/posts/" + path);
+      console.log("process.env.REACT_APP_BASE_URL",process.env.REACT_APP_BASE_URL);
+      const res = await axios.get(`https://weak-lime-marlin-veil.cyclic.app/api/posts/` + path);
       setPost(res.data);
       setTitle(res.data.title);
       setDesc(res.data.desc);
@@ -27,7 +28,7 @@ export default function SinglePost() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/posts/${post._id}`, {
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}posts/${post._id}`, {
         data: { username: user.username },
       });
       window.location.replace("/");
@@ -36,7 +37,7 @@ export default function SinglePost() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`/posts/${post._id}`, {
+      await axios.put(`${process.env.REACT_APP_BASE_URL}posts/${post._id}`, {
         username: user.username,
         title,
         desc,
